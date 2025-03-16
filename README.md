@@ -1,6 +1,6 @@
 # Lakshita Vyas - Personal Portfolio
 
-A modern, interactive portfolio website showcasing my skills, projects, and professional experience as a software engineer and data analyst.
+A modern, interactive portfolio website showcasing my skills, projects, and professional experience as a software engineer and python developer.
 
 ![Portfolio Preview](portfolio-preview.png)
 
