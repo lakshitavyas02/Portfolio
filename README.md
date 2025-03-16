@@ -28,7 +28,7 @@ A modern, interactive portfolio website showcasing my skills, projects, and prof
 
 1. Clone the repository
    ```
-   git clone https://github.com/lakshitavyas02/portfolio.git
+   git clone https://github.com/lakshitavyas02/Portfolio.git
    ```
 
 2. Open `index.html` in your browser to view locally
