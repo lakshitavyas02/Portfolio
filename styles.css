@@ -1,0 +1,2416 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Dancing Script", cursive;
+  scroll-behavior: smooth;
+}
+
+:root {
+  /* Default Purple Theme */
+  --bg-gradient-1: #5d019f;
+  --bg-gradient-2: #6c03a4;
+  --bg-gradient-3: #4b0082;
+  --container-bg: #8a2be2;
+  --header-bg: #6a0dad;
+  --text-primary: #ffffff;
+  --text-accent: #ffcc00;
+  --text-accent-rgb: 255, 204, 0;
+  --card-bg: rgba(0, 0, 0, 0.2);
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --input-placeholder: rgba(255, 255, 255, 0.5);
+  --card-border: transparent;
+  --card-shadow: none;
+  --chatbase-primary: var(--text-accent);
+  --chatbase-bg: var(--container-bg);
+  --chatbase-text: var(--text-color);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-gradient-1: #121212;
+  --bg-gradient-2: #1e1e1e;
+  --bg-gradient-3: #121212;
+  --container-bg: #242323;
+  --header-bg: #121212;
+  --text-primary: #ffffff;
+  --text-accent: #86f50f;
+  --text-accent-rgb: 255, 204, 0;
+  --card-bg: rgba(30, 30, 30, 0.8);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-placeholder: rgba(255, 255, 255, 0.5);
+  --card-border: transparent;
+  --card-shadow: none;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-gradient-1: #ffb6c1;
+  --bg-gradient-2: #ffc0cb;
+  --bg-gradient-3: #ffb6c1;
+  --container-bg: #ffffff;
+  --header-bg: #ffd1dc;
+  --text-primary: #000000;
+  --text-accent: #ff69b4;
+  --text-accent-rgb: 255, 105, 180;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --input-bg: rgba(0, 0, 0, 0.05);
+  --input-placeholder: rgba(0, 0, 0, 0.5);
+  --card-border: rgba(255, 105, 180, 0.3);
+  --card-shadow: 0 2px 8px rgba(255, 105, 180, 0.15);
+}
+
+body {
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-1),
+    var(--bg-gradient-2),
+    var(--bg-gradient-3)
+  );
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Create the blurry effect */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1;
+}
+
+/* Animation for the gradient background */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Page Navigation Dots */
+.page-navigation {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 100;
+}
+
+.nav-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--text-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-dot.active {
+  background-color: var(--text-accent);
+  transform: scale(1.3);
+}
+
+/* Page Container and Pages */
+.page-container {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none; /* Firefox */
+}
+
+.page-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.page {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  background-color: var(--container-bg);
+  border-radius: 15px;
+  padding: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  height: 90vh;
+  overflow-y: auto;
+}
+
+/* Remove scrolling for About page */
+#about .container {
+  overflow-y: hidden;
+  justify-content: flex-start;
+}
+
+/* Remove scrolling for Skills page */
+#skills .container {
+  overflow-y: hidden;
+  justify-content: flex-start;
+}
+
+/* Remove scrolling for Project page */
+#project .container {
+  overflow-y: hidden;
+  justify-content: flex-start;
+}
+
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+/* Reduce header margin in About page */
+#about header {
+  margin-bottom: 15px;
+}
+
+/* Reduce header margin in Skills page */
+#skills header {
+  margin-bottom: 15px;
+}
+
+/* Reduce header margin in Project page */
+#project header {
+  margin-bottom: 15px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-accent);
+  letter-spacing: 1px;
+}
+
+.logo i {
+  margin-right: 5px;
+}
+
+/* Navigation styles */
+.navigation {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.navigation ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navigation ul li a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
+}
+
+.navigation ul li a:hover,
+.navigation ul li a.active {
+  background-color: var(--input-bg);
+  color: var(--text-accent);
+}
+
+.navigation ul li a.active {
+  border-bottom: 2px solid var(--text-accent);
+}
+
+.notification {
+  position: relative;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0;
+  flex: 1;
+}
+
+#about main {
+  height: calc(100% - 140px); /* Adjust for header and footer */
+  overflow: hidden;
+  padding-top: 0;
+}
+
+#project main {
+  padding-top: 0;
+  height: calc(100% - 140px); /* Adjust for header and footer */
+  overflow: hidden;
+}
+
+.content {
+  max-width: 500px;
+  padding-right: 20px;
+  z-index: 1;
+}
+
+.content.full-width {
+  max-width: 100%;
+  padding: 0;
+}
+
+.name-heading {
+  font-family: "Pacifico", cursive;
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--text-accent);
+  margin-bottom: 10px;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  margin-top: 0;
+  text-transform: none;
+}
+
+.typewriter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  height: 30px;
+  position: relative;
+}
+
+.typewriter-prefix {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-right: 5px;
+  margin-bottom: 0;
+  font-family: "Caveat", cursive;
+  text-transform: lowercase !important;
+}
+
+.typewriter-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-accent);
+  border-right: 3px solid var(--text-accent);
+  padding-right: 5px;
+  animation: blink-caret 0.75s step-end infinite;
+  height: 30px;
+  display: inline-block;
+  margin-bottom: 0;
+  min-width: 10px;
+  font-family: "Caveat", cursive;
+  text-transform: lowercase !important;
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--text-accent);
+  }
+}
+
+.bio-text {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  max-width: 500px;
+  color: var(--text-primary);
+  opacity: 0.8;
+  font-family: "Caveat", cursive;
+  font-size: 24px;
+  text-transform: lowercase !important;
+}
+
+.add-button,
+.submit-button {
+  background-color: transparent;
+  border: 2px solid var(--text-accent);
+  color: var(--text-accent);
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+
+.add-button {
+  font-family: "Pacifico", cursive;
+}
+
+.add-button:hover,
+.submit-button:hover {
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+}
+
+.plus-icon {
+  margin-right: 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.illustration {
+  position: relative;
+  width: 50%;
+  height: 400px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.anime-character {
+  width: 150%;
+  height: 150%;
+  object-fit: contain;
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: none;
+}
+
+/* Show/hide images based on theme */
+[data-theme="dark"] .dark-theme-img {
+  opacity: 1;
+  display: block;
+}
+
+[data-theme="purple"] .purple-theme-img {
+  opacity: 1;
+  display: block;
+}
+
+[data-theme="light"] .light-theme-img {
+  opacity: 1;
+  display: block;
+}
+
+/* Chatbot Styles */
+.chat-bubble {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chat-bubble:hover {
+  transform: scale(1.1);
+  background-color: var(--text-accent);
+}
+
+.chat-bubble i {
+  color: var(--container-bg);
+  font-size: 18px;
+}
+
+.chat-bubble.left {
+  top: 40%;
+  left: 5%;
+}
+
+.chat-bubble.right {
+  bottom: 30%;
+  right: 5%;
+}
+
+/* Fixed Chat Button (appears on all pages) */
+.chat-bubble.fixed-chat {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  z-index: 1001;
+  background-color: var(--text-accent);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.chat-bubble.fixed-chat i {
+  color: var(--container-bg);
+  font-size: 22px;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--text-accent-rgb), 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--text-accent-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--text-accent-rgb), 0);
+  }
+}
+
+/* Media query for responsive fixed chat button */
+@media (max-width: 768px) {
+  .chat-bubble.fixed-chat {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.chatbot-container {
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  width: 350px;
+  height: 450px;
+  background-color: var(--container-bg);
+  border-radius: 15px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  transform: scale(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.chatbot-container.active {
+  transform: scale(1);
+}
+
+.chatbot-header {
+  background-color: var(--header-bg);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chatbot-header h3 {
+  color: var(--text-accent);
+  margin: 0;
+  font-size: 20px;
+}
+
+.close-chatbot {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-chatbot:hover {
+  color: var(--text-accent);
+}
+
+.chatbot-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-family: "Caveat", cursive;
+  font-size: 18px;
+  line-height: 1.4;
+  border: 1px solid var(--card-border);
+}
+
+/* Light Theme specific message styling */
+[data-theme="light"] .message.bot {
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.1);
+}
+
+[data-theme="light"] .message.user {
+  border: none; /* No border needed for user messages as they have the accent color background */
+}
+
+.message.user {
+  align-self: flex-end;
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+  border-bottom-right-radius: 5px;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border-bottom-left-radius: 5px;
+}
+
+.chatbot-input {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  background-color: var(--header-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: "Caveat", cursive;
+}
+
+.chatbot-input input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.chatbot-input input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.send-message {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.send-message:hover {
+  background-color: var(--text-primary);
+}
+
+/* Media query for responsive chatbot */
+@media (max-width: 768px) {
+  .chatbot-container {
+    width: 300px;
+    height: 400px;
+    bottom: 70px;
+    right: 20px;
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: flex-start;
+  gap: 30px;
+  padding: 20px 0;
+  z-index: 2;
+  margin-top: 20px;
+}
+
+.stat-box {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 15px 25px;
+  text-align: center;
+  min-width: 100px;
+}
+
+.stat-box h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin-bottom: 5px;
+}
+
+.stat-box h2 span {
+  font-size: 16px;
+  margin-left: 2px;
+}
+
+.stat-box p {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* Purple circle background for the anime character */
+.illustration::before {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background-color: var(--header-bg);
+  border-radius: 50%;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+/* Additional styling to match the reference image */
+.notification i {
+  font-size: 20px;
+}
+
+/* Make the text uppercase as in the reference */
+h1,
+.content p:not(.bio-text):not(.typewriter-prefix):not(.typewriter-text),
+.stat-box p,
+.submit-button {
+  text-transform: uppercase;
+}
+
+/* About page styles */
+#about .content.full-width h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-text {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.about-text h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin: 25px 0 15px 0;
+}
+
+.about-text p {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.about-text ul {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.about-text ul li {
+  margin-bottom: 10px;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+/* Skills page styles */
+#skills .content.full-width h1 {
+  text-align: center;
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+#skills .skills-grid {
+  margin-top: 15px;
+  gap: 15px;
+}
+
+.skill-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+#skills .skill-card {
+  padding: 15px;
+}
+
+.skill-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.skill-card i {
+  font-size: 40px;
+  color: var(--text-accent);
+  margin-bottom: 15px;
+}
+
+#skills .skill-card i {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.skill-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin: 15px 0 10px;
+}
+
+#skills .skill-card h3 {
+  font-size: 24px;
+  margin: 10px 0 8px;
+}
+
+.skill-card p {
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+#skills .skill-card p {
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+/* Projects page styles */
+.projects-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 30px;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+#project .projects-showcase {
+  margin-top: 15px;
+  gap: 15px;
+}
+
+.project-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  height: 200px; /* Set minimum height */
+  display: flex;
+  flex-direction: column;
+}
+
+#project .project-card {
+  padding: 15px;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Project image standardization */
+.project-image {
+  width: 50px; /* Standardize width */
+  height: 50px; /* Standardize height */
+  background-color: var(--input-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 1px solid var(--card-border);
+}
+
+.project-image i {
+  font-size: 25px; /* Standardize icon size */
+  color: var(--text-accent);
+}
+
+.project-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin: 15px 0 10px;
+}
+
+#project .project-card h3 {
+  font-size: 24px;
+  margin: 10px 0 8px;
+}
+
+.project-card p {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+#project .project-card p {
+  font-size: 20px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.project-status {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--card-bg);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text-accent);
+  font-weight: 500;
+}
+
+#project .project-status {
+  top: 15px;
+  right: 15px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-family: "Dancing Script", cursive;
+}
+
+/* View Project Button */
+.view-project {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-family: "Dancing Script", cursive;
+}
+
+.view-project:hover {
+  background-color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Contact page styles */
+#contact .content.full-width h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 46px;
+  font-weight: 700;
+}
+#contact .container {
+  overflow-y: hidden;
+  justify-content: center;
+}
+
+#contact main {
+  padding-top: 0;
+  height: calc(100% - 90px); /* Reduced from 100px */
+  overflow: hidden;
+}
+
+#contact header {
+  margin-bottom: 10px; /* Reduced from default 40px */
+}
+
+.contact-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 5px; /* Reduced from 10px */
+  height: 100%;
+}
+
+#contact .contact-container {
+  margin-top: 5px; /* Reduced from 10px */
+  align-items: stretch;
+}
+
+.contact-info {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+#contact .content h1 {
+  font-size: 42px; /* Reduced from 46px */
+  margin-bottom: 10px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+#contact .contact-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px; /* Reduced from 30px */
+  height: 100%;
+}
+
+#contact .contact-details {
+  margin-bottom: 20px; /* Reduced from 30px */
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#contact .contact-item {
+  margin-bottom: 20px; /* Reduced from 30px */
+  padding-left: 5px; /* Reduced from 10px */
+}
+
+#contact .contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-item i {
+  font-size: 24px;
+  color: var(--text-accent);
+  margin-right: 15px;
+  width: 30px;
+}
+
+#contact .contact-item i {
+  font-size: 24px; /* Reduced from 28px */
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+#contact .social-links {
+  margin-top: auto;
+  justify-content: flex-start;
+  gap: 20px; /* Reduced from 25px */
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--input-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid var(--card-border);
+}
+
+#contact .social-icon {
+  width: 45px; /* Reduced from 50px */
+  height: 45px; /* Reduced from 50px */
+}
+
+#contact .social-icon i {
+  font-size: 20px; /* Reduced from 22px */
+}
+
+.social-icon:hover {
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+  transform: translateY(-3px);
+}
+
+.contact-form {
+  flex: 2;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+#contact .contact-form {
+  padding: 15px 20px; /* Adjusted from 20px 30px */
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+#contact .form-group {
+  margin-bottom: 15px; /* Reduced from 25px */
+}
+
+#contact .form-group:last-of-type {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#contact .form-group:last-of-type textarea {
+  flex-grow: 1;
+  min-height: 100px; /* Reduced from 120px */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+#contact .form-group label {
+  font-size: 22px; /* Reduced from 24px */
+  margin-bottom: 5px; /* Reduced from 8px */
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#contact .form-group input,
+#contact .form-group textarea {
+  padding: 10px; /* Reduced from 15px */
+  font-size: 20px; /* Reduced from 22px */
+}
+
+.form-group textarea {
+  height: 120px;
+  resize: none;
+}
+
+#contact .submit-button {
+  padding: 12px 25px; /* Reduced from 15px 30px */
+  font-size: 20px; /* Reduced from 22px */
+  margin-top: 10px; /* Reduced from 15px */
+}
+
+/* Media query for responsive navigation */
+@media (max-width: 768px) {
+  .navigation ul {
+    display: none;
+  }
+
+  .navigation ul li a {
+    font-size: 18px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .projects-showcase {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-container {
+    flex-direction: column;
+  }
+
+  .about-content {
+    flex-direction: column;
+  }
+
+  .page-navigation {
+    right: 10px;
+  }
+
+  .nav-dot {
+    width: 12px;
+    height: 12px;
+  }
+
+  .name-heading {
+    font-size: 40px;
+  }
+
+  .typewriter-container {
+    margin-bottom: 15px;
+  }
+
+  .typewriter-prefix,
+  .typewriter-text {
+    font-size: 20px;
+  }
+
+  .bio-text,
+  .about-text p,
+  .about-text ul li {
+    font-size: 20px;
+  }
+
+  .add-button,
+  .submit-button {
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+
+  .skill-card h3 {
+    font-size: 24px;
+  }
+
+  .skill-card p,
+  .project-card p,
+  .contact-item p {
+    font-size: 18px;
+  }
+
+  .project-card h3 {
+    font-size: 24px;
+  }
+
+  .form-group label {
+    font-size: 18px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 18px;
+  }
+
+  .image-frame {
+    width: 300px;
+    height: 300px;
+  }
+
+  .about-img {
+    width: 110%;
+    height: 110%;
+    transform: scale(1.1);
+  }
+
+  #about .about-text p {
+    padding: 0 15px;
+  }
+}
+
+/* Apply modern typography throughout the site */
+h1,
+h2,
+h3,
+.logo {
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+}
+
+/* Update section headings */
+.content h1 {
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin-bottom: 25px;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
+
+/* Reduce top margin for About page heading */
+#about .content h1 {
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 46px;
+  font-weight: 700;
+}
+
+/* Reduce top margin for Skills page heading */
+#skills .content h1 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Reduce top margin for Project page heading */
+#project .content h1 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Update about section */
+.about-text h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin: 25px 0 15px 0;
+}
+
+.about-text p {
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+/* Update skill cards */
+.skill-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin: 15px 0 10px;
+}
+
+.skill-card p {
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+/* Update project cards */
+.project-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin: 15px 0 10px;
+}
+
+.project-card p {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+/* Update contact form */
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Apply Caveat font to specific text elements */
+.bio-text,
+.project-card p,
+.about-text p,
+.about-text ul li,
+.skill-card p,
+.contact-item p {
+  font-family: "Caveat", cursive;
+  font-weight: 500;
+  text-transform: lowercase !important;
+}
+
+.about-text p {
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.skill-card p {
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+#project .content.full-width h1 {
+  text-align: center;
+}
+.project-card p {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.contact-item p {
+  font-size: 22px;
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1001;
+  background-color: var(--card-bg);
+  padding: 8px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--card-border);
+}
+
+.theme-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+}
+
+.theme-btn.active {
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+}
+
+/* Fix for contact form placeholder text */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+/* Improve contrast for light theme */
+[data-theme="light"] .skill-card p,
+[data-theme="light"] .project-card p,
+[data-theme="light"] .about-text p,
+[data-theme="light"] .contact-item p {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Improve contrast for light theme navigation */
+[data-theme="light"] .navigation ul li a {
+  color: #333;
+}
+
+/* Update hover effect for light theme navigation */
+[data-theme="light"] .navigation ul li a:hover,
+[data-theme="light"] .navigation ul li a.active {
+  color: var(--text-accent);
+  background-color: rgba(255, 105, 180, 0.1);
+}
+
+[data-theme="light"] .navigation ul li a.active {
+  border-bottom: 2px solid var(--text-accent);
+}
+
+/* Ensure hover effect is visible in light theme */
+[data-theme="light"] .skill-card:hover,
+[data-theme="light"] .project-card:hover {
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
+  transform: translateY(-5px);
+  border-color: rgba(255, 105, 180, 0.5);
+}
+
+/* Improve chatbot container in light theme */
+[data-theme="light"] .chatbot-container {
+  box-shadow: 0 5px 25px rgba(255, 105, 180, 0.2);
+  border: 1px solid rgba(255, 105, 180, 0.3);
+}
+
+[data-theme="light"] .chatbot-header {
+  border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+}
+
+[data-theme="light"] .chatbot-input {
+  border-top: 1px solid rgba(255, 105, 180, 0.2);
+}
+
+[data-theme="light"] .chatbot-input input {
+  border: 1px solid rgba(255, 105, 180, 0.3);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .chatbot-input input:focus {
+  border-color: rgba(255, 105, 180, 0.6);
+  background-color: #fff;
+  outline: none;
+}
+
+/* Improve send button in light theme */
+[data-theme="light"] .send-message:hover {
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.2);
+}
+
+/* Style Chatbase widget to match portfolio theme - Base styles */
+.chatbase-bubble {
+  background-color: var(--text-accent) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.chatbase-bubble svg {
+  fill: var(--container-bg) !important;
+}
+
+.chatbase-widget {
+  font-family: "Dancing Script", cursive !important;
+  background-color: var(--container-bg) !important;
+  color: var(--text-primary) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+.chatbase-widget header {
+  background-color: var(--text-accent) !important;
+  color: var(--container-bg) !important;
+}
+
+.chatbase-widget input,
+.chatbase-widget textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--text-accent) !important;
+}
+
+.chatbase-widget button {
+  background-color: var(--text-accent) !important;
+  color: var(--container-bg) !important;
+}
+
+/* Theme-specific Chatbase styles */
+/* Dark Theme */
+[data-theme="dark"] .chatbase-widget {
+  background-color: #000000 !important;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .chatbase-widget header {
+  background-color: #121212 !important;
+}
+
+[data-theme="dark"] .chatbase-widget input,
+[data-theme="dark"] .chatbase-widget textarea {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: #ffcc00 !important;
+}
+
+/* Light Theme */
+[data-theme="light"] .chatbase-widget {
+  background-color: #ffffff !important;
+  box-shadow: 0 5px 25px rgba(255, 105, 180, 0.2) !important;
+  border: 1px solid rgba(255, 105, 180, 0.3) !important;
+}
+
+[data-theme="light"] .chatbase-widget header {
+  background-color: #ffd1dc !important;
+  border-bottom: 1px solid rgba(255, 105, 180, 0.2) !important;
+}
+
+[data-theme="light"] .chatbase-widget input,
+[data-theme="light"] .chatbase-widget textarea {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(255, 105, 180, 0.3) !important;
+  color: #000000 !important;
+}
+
+[data-theme="light"] .chatbase-bubble {
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3) !important;
+}
+
+/* Hide Chatbase's default bubble since we're using our own */
+.chatbase-bubble-container,
+.chatbase-bubble,
+#chatbase-bubble-button {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Ensure our custom button is visible and working */
+.chat-bubble.fixed-chat {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 9999 !important;
+}
+
+/* Additional Chatbase widget styling */
+.chatbase-widget {
+  z-index: 10000 !important;
+  position: fixed !important;
+  bottom: 90px !important;
+  right: 30px !important;
+  max-height: 600px !important;
+  max-width: 400px !important;
+  border-radius: 15px !important;
+  overflow: hidden !important;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ensure Chatbase widget is properly themed */
+.chatbase-widget * {
+  font-family: "Dancing Script", cursive !important;
+}
+
+.chatbase-widget .chatbase-widget-header {
+  background-color: var(--text-accent) !important;
+  color: var(--container-bg) !important;
+  padding: 15px !important;
+}
+
+.chatbase-widget .chatbase-widget-body {
+  background-color: var(--container-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+.chatbase-widget .chatbase-widget-input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--text-accent) !important;
+}
+
+/* Media query for responsive Chatbase widget */
+@media (max-width: 768px) {
+  .chatbase-widget {
+    bottom: 70px !important;
+    right: 20px !important;
+    max-width: 320px !important;
+  }
+}
+
+/* Chat button active state when chatbot is open */
+.chat-bubble.fixed-chat.active {
+  transform: rotate(45deg) scale(1.1);
+  background-color: var(--container-bg) !important;
+}
+
+.chat-bubble.fixed-chat.active i {
+  color: var(--text-accent) !important;
+  transform: rotate(-45deg);
+}
+
+/* Form success message */
+.form-success {
+  text-align: center;
+  padding: 30px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-success i {
+  font-size: 60px;
+  color: var(--text-accent);
+  margin-bottom: 20px;
+}
+
+.form-success h3 {
+  font-size: 28px;
+  color: var(--text-accent);
+  margin-bottom: 15px;
+}
+
+.form-success p {
+  font-size: 22px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.reset-form {
+  background-color: transparent;
+  border: 2px solid var(--text-accent);
+  color: var(--text-accent);
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Pacifico", cursive;
+}
+
+.reset-form:hover {
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Add a specific breakpoint for medium-sized screens (like half-laptop width) */
+@media (max-width: 1200px) and (min-width: 769px) {
+  /* Home page adjustments */
+  #home main {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+
+  .content {
+    max-width: 90%;
+    padding-right: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .illustration {
+    width: 80%;
+    height: 300px;
+    margin: 0 auto;
+  }
+
+  .illustration::before {
+    width: 280px;
+    height: 280px;
+    right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .name-heading {
+    font-size: 40px;
+  }
+
+  .bio-text {
+    margin-bottom: 20px;
+  }
+
+  /* Center the typewriter container */
+  .typewriter-container {
+    justify-content: center;
+  }
+
+  /* Center the download button */
+  .add-button {
+    margin: 0 auto;
+    display: inline-block;
+  }
+}
+
+/* Full screen behavior - no scrolling within pages */
+@media (min-width: 1201px) {
+  /* Ensure each page fits viewport perfectly */
+  .page {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .container {
+    height: 95vh; /* Slightly less than 100vh to prevent scrollbars */
+    overflow: hidden;
+  }
+
+  /* Content areas shouldn't scroll at full screen */
+  main {
+    overflow: hidden;
+  }
+
+  /* Ensure content fits without scrolling */
+  .content {
+    max-height: calc(100vh - 150px); /* Adjusting for header */
+  }
+
+  #skills .skills-grid {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+
+  #project .projects-showcase {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+
+  #contact .contact-container {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+  }
+
+  /* Keep the page navigation dots visible at full screen */
+  .page-navigation {
+    display: flex;
+  }
+}
+
+/* Responsive scrolling behavior for smaller screens - keep this as is */
+@media (max-width: 1200px) {
+  /* Change the scroll behavior for smaller screens */
+  body {
+    overflow: auto;
+    height: auto;
+  }
+
+  .page-container {
+    height: auto;
+    overflow-y: visible;
+    scroll-snap-type: none;
+  }
+
+  .page {
+    height: auto;
+    min-height: 100vh;
+    scroll-snap-align: none;
+    padding: 30px 20px;
+  }
+
+  .container {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 20px;
+  }
+
+  /* Fix layout for home page */
+  #home main {
+    flex-direction: column;
+    padding: 0;
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    max-width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    order: 1;
+  }
+
+  .illustration {
+    width: 100%;
+    max-width: 350px; /* Control maximum width */
+    height: 320px; /* Fixed height */
+    margin: 0 auto;
+    position: relative;
+    overflow: visible;
+    order: 2;
+  }
+
+  .illustration::before {
+    width: 250px;
+    height: 250px;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+  }
+
+  .anime-character {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .name-heading {
+    margin-bottom: 10px;
+  }
+
+  .typewriter-container {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .bio-text {
+    margin-bottom: 15px;
+  }
+
+  .add-button {
+    margin: 0 auto;
+  }
+
+  /* Fix page navigation dots */
+  .page-navigation {
+    display: none; /* Hide dots on mobile/small screens */
+  }
+
+  /* Adjust all other pages */
+  #skills .skills-grid,
+  #project .projects-showcase {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  #contact .contact-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* Additional fixes for very small screens */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 15px;
+  }
+
+  header {
+    margin-bottom: 20px;
+  }
+
+  .name-heading {
+    font-size: 36px;
+  }
+
+  .bio-text {
+    font-size: 20px;
+  }
+
+  .content h1 {
+    font-size: 36px;
+  }
+
+  .about-text h2 {
+    font-size: 26px;
+  }
+
+  .navigation ul {
+    gap: 10px;
+  }
+
+  .navigation ul li a {
+    font-size: 18px;
+    padding: 3px 6px;
+  }
+
+  .illustration {
+    max-width: 280px;
+    height: 280px;
+  }
+
+  .illustration::before {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+/* Fix heading visibility on small screens - without backgrounds */
+@media (max-width: 1200px) {
+  /* Change layout to prevent overlap */
+  #home main {
+    display: flex;
+    flex-direction: column; /* Text first, then image */
+    gap: 20px;
+  }
+
+  /* Ensure text content is above the image and comes first */
+  .content {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+    order: 1; /* Make content appear first */
+  }
+
+  /* Move image after text */
+  .illustration {
+    position: relative;
+    z-index: 5;
+    order: 2; /* Make image appear after content */
+    margin-top: -30px; /* Pull up slightly to reduce excess space */
+  }
+
+  /* Ensure text elements have proper z-index but no backgrounds */
+  .name-heading,
+  .typewriter-container,
+  .bio-text {
+    position: relative;
+    z-index: 15;
+    margin-bottom: 15px;
+  }
+
+  /* Reposition the image circle background */
+  .illustration::before {
+    top: 50%;
+  }
+
+  /* Center align text elements */
+  .name-heading,
+  .typewriter-container,
+  .bio-text {
+    text-align: center;
+  }
+
+  .typewriter-container {
+    justify-content: center;
+  }
+
+  .add-button {
+    margin: 10px auto;
+  }
+}
+
+/* Further adjustments for very small screens */
+@media (max-width: 600px) {
+  .illustration {
+    height: 300px; /* Reduce image height */
+    margin-top: -20px; /* Pull up slightly */
+  }
+
+  .illustration::before {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* Single Experience styling */
+.single-experience {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0 40px 0;
+  min-height: 450px;
+}
+
+.experience-card {
+  width: 100%;
+  max-width: 1000px;
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  padding: 30px;
+  border: 2px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+  margin-top: -10px;
+}
+
+.experience-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: var(--text-accent);
+}
+
+.experience-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.experience-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--input-bg);
+  position: relative;
+}
+
+.experience-icon {
+  width: 60px;
+  height: 60px;
+  background-color: var(--input-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  border: 2px solid var(--text-accent);
+}
+
+.experience-icon i {
+  font-size: 24px;
+  color: var(--text-accent);
+}
+
+.experience-title {
+  flex: 1;
+}
+
+.experience-title h3 {
+  font-size: 32px;
+  color: var(--text-accent);
+  margin-bottom: 5px;
+  font-family: "Dancing Script", cursive;
+}
+
+.experience-title h4 {
+  font-size: 22px;
+  opacity: 0.9;
+  font-family: "Dancing Script", cursive;
+  margin-bottom: 5px;
+}
+
+.experience-period {
+  text-align: right;
+  padding-right: 15px;
+}
+
+.experience-period .year {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-accent);
+  display: block;
+  font-family: "Dancing Script", cursive;
+}
+
+.experience-period .duration {
+  font-size: 18px;
+  opacity: 0.8;
+  display: block;
+  margin-top: 5px;
+  font-family: "Caveat", cursive;
+}
+
+.experience-body {
+  padding-left: 10px;
+}
+
+.experience-body p {
+  font-size: 22px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-family: "Caveat", cursive;
+  text-transform: lowercase !important;
+}
+
+.experience-highlights {
+  list-style-type: none;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.experience-highlights li {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 25px;
+  font-family: "Caveat", cursive;
+  text-transform: lowercase !important;
+}
+#experience .content.full-width h1 {
+  text-align: center;
+  font-size: 46px;
+  font-weight: 700;
+}
+.experience-highlights li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--text-accent);
+  font-size: 22px;
+}
+
+/* Theme-specific styles */
+[data-theme="dark"] .experience-card {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+[data-theme="light"] .experience-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 105, 180, 0.5);
+  box-shadow: 0 2px 8px rgba(255, 105, 180, 0.15);
+}
+
+[data-theme="light"] .experience-card:hover {
+  box-shadow: 0 12px 30px rgba(255, 105, 180, 0.25);
+}
+
+[data-theme="light"] .experience-body p,
+[data-theme="light"] .experience-highlights li {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .experience-card {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 15px;
+  }
+
+  .experience-icon {
+    margin-right: 0;
+  }
+
+  .experience-period {
+    padding-right: 0;
+    text-align: left;
+    margin-top: 10px;
+    border-top: 1px solid var(--input-bg);
+    padding-top: 10px;
+    width: 100%;
+  }
+
+  .experience-title h3 {
+    font-size: 26px;
+  }
+
+  .experience-title h4 {
+    font-size: 18px;
+  }
+
+  .experience-body p,
+  .experience-highlights li {
+    font-size: 18px;
+  }
+}
+
+/* Style the company link */
+.company-link {
+  color: var(--text-accent);
+  text-decoration: none;
+  font-weight: 700;
+  position: relative;
+  transition: all 0.3s ease;
+  display: inline-block;
+  font-family: "Dancing Script", cursive;
+  font-size: 22px;
+}
+
+/* Underline animation effect */
+.company-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--text-accent);
+  transition: width 0.3s ease;
+}
+
+.company-link:hover {
+  transform: translateY(-2px);
+}
+
+.company-link:hover::after {
+  width: 100%;
+}
+
+/* Add LinkedIn icon */
+.company-link::before {
+  content: "\f08c"; /* LinkedIn icon */
+  font-family: "Font Awesome 5 Brands";
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+/* Theme-specific styling */
+[data-theme="dark"] .company-link {
+  text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+}
+
+[data-theme="light"] .company-link {
+  text-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+}
+
+/* Fix the "My Experience" heading spacing */
+#experience .content h1 {
+  padding-top: 20px;
+  margin-bottom: 30px;
+  font-size: 42px;
+  line-height: 1.2;
+  clear: both;
+  width: 100%;
+  display: block;
+}
+
+/* Fix the experience card bottom border and ensure full display */
+.experience-card {
+  width: 100%;
+  max-width: 800px;
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  padding: 30px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+/* Ensure container has enough height */
+#experience .container {
+  min-height: 90vh;
+  padding-bottom: 40px;
+}
+
+/* Fix spacing for light theme specifically */
+[data-theme="light"] .experience-card {
+  border: 1px solid rgba(255, 105, 180, 0.5);
+}
+
+/* Improve responsive behavior */
+@media (max-width: 768px) {
+  #experience .content h1 {
+    padding-top: 15px;
+    margin-bottom: 20px;
+  }
+
+  .single-experience {
+    padding: 10px 0 30px 0;
+  }
+
+  .experience-card {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+}
+
+/* Add these styles for the project slider */
+.projects-showcase {
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.additional-projects {
+  display: none;
+  opacity: 0;
+}
+
+.additional-projects.active {
+  display: grid;
+  opacity: 1;
+}
+
+/* Project Navigation Buttons */
+.project-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  border: 2px solid var(--text-accent);
+  color: var(--text-accent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: var(--text-accent);
+  color: var(--container-bg);
+  transform: scale(1.1);
+}
+
+.nav-btn i {
+  font-size: 18px;
+}
+
+/* Theme-specific styles for navigation buttons */
+[data-theme="light"] .nav-btn {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: var(--text-accent);
+}
+
+[data-theme="dark"] .nav-btn {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .project-navigation {
+    margin-top: 20px;
+  }
+
+  .nav-btn {
+    width: 35px;
+    height: 35px;
+  }
+
+  .nav-btn i {
+    font-size: 16px;
+  }
+}
